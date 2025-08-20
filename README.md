@@ -1,88 +1,55 @@
-# Plus qu'Agenda
+# Plus qu'Agenda Back
 
-Ce projet est une application de gestion de réservation de créneaux, développée avec [Quarkus](https://quarkus.io/), MongoDB et REST.
+Application de gestion de réservation de créneaux, développée avec **Quarkus** et MongoDB, exposant une API REST complète pour l'interaction avec un frontend (ex : application web ou mobile).
 
-## Fonctionnalités
+## Points forts
 
-- Gestion des utilisateurs (création, activation, désactivation, suppression)
-- Authentification avec génération de code de vérification
-- Réinitialisation de mot de passe par email
-- Gestion des créneaux (création, réservation, modification, génération automatique)
-- Gestion des profils utilisateurs
-- API REST sécurisée (rôles `user` et `admin`)
+- **API RESTful** : Toutes les fonctionnalités (authentification, gestion des utilisateurs, gestion des créneaux, profils) sont accessibles via des endpoints REST documentés.
+- **Sécurité** : Authentification JWT, gestion des rôles (`user`, `admin`), endpoints protégés.
+- **Interaction Frontend** : Pensé pour être consommé par un frontend moderne (React, Angular, Vue, etc.), avec gestion CORS activée.
+- **Documentation OpenAPI/Swagger** : Accès à la documentation interactive des endpoints via `/q/swagger-ui`.
 
-## Prérequis
+## Fonctionnalités principales exposées par l'API
 
-- Java 21+
-- Maven 3.8+
-- MongoDB
+- **Authentification & Sécurité**
+  - Inscription, connexion, validation par code envoyé par email
+  - Réinitialisation de mot de passe
+  - Génération et validation de JWT
 
-## Démarrage en mode développement
+- **Gestion des utilisateurs**
+  - CRUD utilisateurs (création, activation/désactivation, suppression)
+  - Modification du mot de passe
+  - Recherche et listing
 
-```sh
-./mvnw compile quarkus:dev
+- **Gestion des créneaux**
+  - Création, modification, suppression de créneaux
+  - Réservation et annulation
+  - Génération automatique de créneaux sur plusieurs jours
+
+- **Gestion des profils**
+  - Création et mise à jour du profil utilisateur
+
+## Exemple d'interaction avec le Frontend
+
+Le frontend peut consommer les endpoints suivants :
+
+- `POST /auth/register` : Inscription d'un utilisateur
+- `POST /auth/login` : Connexion, envoi d'un code de vérification par email
+- `POST /auth/validate-code` : Validation du code, récupération du JWT
+- `GET /users` : Liste des utilisateurs (admin)
+- `PUT /admin/activate/{username}` : Activation d'un utilisateur (admin)
+- `POST /creneaux/create` : Création d'un créneau
+- `POST /creneaux/reserve` : Réservation d'un créneau
+
+Toutes les réponses sont au format JSON, facilitant l'intégration avec le frontend.
+
+## Configuration CORS
+
+Pour permettre l'accès depuis le frontend (ex : localhost:8081) :
+
+```properties
+quarkus.http.cors=true
+quarkus.http.cors.origins=http://localhost:8081
+quarkus.http.cors.methods=GET,POST,PUT,DELETE
 ```
 
-L’interface Dev UI est disponible sur [http://localhost:8080/q/dev/](http://localhost:8080/q/dev/).
-
-## Packaging et exécution
-
-Pour packager l’application :
-
-```sh
-./mvnw package
-```
-
-L’application packagée se trouve dans `target/quarkus-app/` et peut être lancée avec :
-
-```sh
-java -jar target/quarkus-app/quarkus-run.jar
-```
-
-Pour générer un _über-jar_ :
-
-```sh
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-java -jar target/*-runner.jar
-```
-
-## Exécutable natif
-
-Pour compiler en natif :
-
-```sh
-./mvnw package -Dnative
-```
-
-Ou via un conteneur :
-
-```sh
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-## Endpoints principaux
-
-- `/auth/register` : inscription utilisateur
-- `/auth/login` : connexion utilisateur
-- `/auth/send-reset-code` : envoi d’un code de réinitialisation
-- `/auth/reset-password` : réinitialisation du mot de passe
-- `/users` : gestion des utilisateurs (GET, PUT, etc.)
-- `/creneaux` : gestion des créneaux
-- `/admin` : endpoints réservés aux administrateurs
-
-## Tests
-
-Lancer les tests :
-
-```sh
-./mvnw test
-```
-
-## Guides Quarkus utiles
-
-- [MongoDB avec Panache](https://quarkus.io/guides/mongodb-panache)
-- [RESTEasy Classic](https://quarkus.io/guides/resteasy)
-
----
-
-**Auteur** : Projet CDA – 2024
