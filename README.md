@@ -1,71 +1,88 @@
-# reservcreneaux
+# Plus qu'Agenda
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Ce projet est une application de gestion de réservation de créneaux, développée avec [Quarkus](https://quarkus.io/), MongoDB et REST.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Fonctionnalités
 
-## Running the application in dev mode
+- Gestion des utilisateurs (création, activation, désactivation, suppression)
+- Authentification avec génération de code de vérification
+- Réinitialisation de mot de passe par email
+- Gestion des créneaux (création, réservation, modification, génération automatique)
+- Gestion des profils utilisateurs
+- API REST sécurisée (rôles `user` et `admin`)
 
-You can run your application in dev mode that enables live coding using:
+## Prérequis
 
-```shell script
+- Java 21+
+- Maven 3.8+
+- MongoDB
+
+## Démarrage en mode développement
+
+```sh
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+L’interface Dev UI est disponible sur [http://localhost:8080/q/dev/](http://localhost:8080/q/dev/).
 
-## Packaging and running the application
+## Packaging et exécution
 
-The application can be packaged using:
+Pour packager l’application :
 
-```shell script
+```sh
 ./mvnw package
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+L’application packagée se trouve dans `target/quarkus-app/` et peut être lancée avec :
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```sh
+java -jar target/quarkus-app/quarkus-run.jar
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+Pour générer un _über-jar_ :
 
-## Creating a native executable
+```sh
+./mvnw package -Dquarkus.package.jar.type=uber-jar
+java -jar target/*-runner.jar
+```
 
-You can create a native executable using:
+## Exécutable natif
 
-```shell script
+Pour compiler en natif :
+
+```sh
 ./mvnw package -Dnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Ou via un conteneur :
 
-```shell script
+```sh
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/reservcreneaux-1.0-SNAPSHOT-runner`
+## Endpoints principaux
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+- `/auth/register` : inscription utilisateur
+- `/auth/login` : connexion utilisateur
+- `/auth/send-reset-code` : envoi d’un code de réinitialisation
+- `/auth/reset-password` : réinitialisation du mot de passe
+- `/users` : gestion des utilisateurs (GET, PUT, etc.)
+- `/creneaux` : gestion des créneaux
+- `/admin` : endpoints réservés aux administrateurs
 
-## Related Guides
+## Tests
 
-- MongoDB with Panache ([guide](https://quarkus.io/guides/mongodb-panache)): Simplify your persistence code for MongoDB
-  via the active record or the repository pattern
-- REST resources for MongoDB with Panache ([guide](https://quarkus.io/guides/rest-data-panache)): Generate Jakarta REST
-  resources for your MongoDB entities and repositories
-- RESTEasy Classic ([guide](https://quarkus.io/guides/resteasy)): REST endpoint framework implementing Jakarta REST and
-  more
+Lancer les tests :
 
-## Provided Code
+```sh
+./mvnw test
+```
 
-### RESTEasy JAX-RS
+## Guides Quarkus utiles
 
-Easily start your RESTful Web Services
+- [MongoDB avec Panache](https://quarkus.io/guides/mongodb-panache)
+- [RESTEasy Classic](https://quarkus.io/guides/resteasy)
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+---
+
+**Auteur** : Projet CDA – 2024
